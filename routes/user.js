@@ -66,8 +66,8 @@ exports.logout = function(req, res){
 	}
 	else{
 		//FB.logout(function(response) {
-			req.session.user = null;
-			res.redirect('/');
+		req.session.user = null;
+		res.redirect('/');
 		//};
 	};
 };
