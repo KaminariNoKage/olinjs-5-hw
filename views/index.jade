@@ -1,6 +1,33 @@
 extends layout
 
 block content
-	h1= title
-	p Welcome 
-	img(src="#{image}")
+	script(src='http://code.jquery.com/jquery.js')
+	script(src='/javascripts/mainscript.js')
+	h1 MyFaceBookSpace
+	input(type="button", id="open", name="Open", value="Click to Change  Page")
+	input(type="button", id="logout", name="logout", value="Log Out")
+	form(id="pagestyle")
+		h3 Change Your Page Layout!
+		| Background Color: 
+		input(type="text", id="bg", name="background", value="#{background}")
+		br
+		| Text Color: 
+		input(type="text", id="txc", name="textcolor", value="#{textcolor}")
+		br
+		| Text Font: 
+		input(type="text", id="txf", name="textfont", value="#{textfont}")
+		br
+		| Text Size: 
+		input(type="text", id="txs", name="textsize", value="#{textsize}")
+		br
+		| Message:
+		textarea(id="msg", name="message", value="#{message}")
+		input(type="submit", value="Update")
+	br
+	br
+	div(id="display_area")
+		img(src="#{image}", id="logo")
+		div(id="textstuff")
+			h4(id="namehead") #{title}
+			| #{message}
+

@@ -9,9 +9,13 @@ db.once('open', function callback () {
 
 var homeSchema = mongoose.Schema({
 	name: String,
+	fb_id: String,
+	image: String,
 	background: String,
+	textcolor: String,
 	textfont: String,
-	textsize: Number
+	textsize: String,
+	message: String
 });
 
 var Homepg = mongoose.model('Homepg', homeSchema);

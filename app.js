@@ -26,6 +26,7 @@ app.configure(function(){
   app.use(Facebook.middleware({ appId: '552316371453189', secret: 'b97c4a9c6423bc770f2a59d2af9a4273' }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+  mongoose.connect('localhost');
 });
 
 app.configure('development', function(){
@@ -33,6 +34,11 @@ app.configure('development', function(){
 });
 
 app.get('/', Facebook.loginRequired(), routes.index);
+app.get('/listall', user.list);
+app.get('/myhome', user.myhome);
+
+app.post('/update', user.update);
+app.post('/logout', user.logout);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

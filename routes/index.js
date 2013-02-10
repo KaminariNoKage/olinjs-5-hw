@@ -8,19 +8,27 @@ var Homepg = require('../models/fb_model.js');
 exports.index = function(req, res){
 	req.facebook.api('/me', function(err, data) {
 		var id = data.id
-			, img = "https://graph.facebook.com/" + data.username + "/picture/";
-		Homepg.find({name: id}).exec(function (err, docs) {
+			, img = "https://graph.facebook.com/" + data.username + "/picture?width=200&height=200"
+			, name = data.name;
+		Homepg.find({fb_id: id}).exec(function (err, docs) {
+			//Checking to see if the user id already exists (once logged in)
 			if (docs[0] == null){
-				var newuser = new Homepg({name: id, background: 'black', textfont: 'arial', textsize: 20});
+				var newuser = new Homepg({name: name, fb_id: id, image: img, background: 'black', textcolor: 'white', textfont: 'Arial', textsize: '20px', message: 'My New Page! Change What I say!'});
+				console.log('New user made')
 				newuser.save(function (err) {
 				if (err)
 					return console.log("Error: We couldn't save the new User");
-				res.render('index', {title: id, image: img});
+				//Setting the user session to the current user if new
+				req.session.user = newuser;
+				//Redirecting to home for more fun stuff
+				res.redirect('/myhome');
 				});
 			}
 			else {
-				console.log('user',data);
-				res.render('index', {title: id, image: img});
+				//docs[0].remove();
+				//Setting the session to the current, already logged user
+				req.session.user = docs[0];
+				res.redirect('/myhome');
 			};
 		});
 	});
