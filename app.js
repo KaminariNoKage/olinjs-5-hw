@@ -26,19 +26,36 @@ app.configure(function(){
   app.use(Facebook.middleware({ appId: '552316371453189', secret: 'b97c4a9c6423bc770f2a59d2af9a4273' }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
-  mongoose.connect('http://lit-bastion-7638.herokuapp.com');
+  mongoose.connect('localhost');
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', Facebook.loginRequired(), routes.index);
-app.get('/listall', user.list);
-app.get('/myhome', user.myhome);
+function facebookGetUser() {
+  return function(req, res, next) {
+    req.facebook.getUser( function(err, user) {
+      if (!user || err){
+        res.send("Please go to: /login to log in");
+      } else {
+        req.user = user;
+        next();
+      }
+    });
+  }
+}
+
+app.get('/test', facebookGetUser(), function(req, res){
+    res.send("hello there", req.user);
+});
+
+app.get('/', facebookGetUser(), routes.index);
+app.get('/myhome', facebookGetUser(), user.myhome);
+app.get('/login', Facebook.loginRequired(), user.login);
+app.get('/logout', facebookGetUser(), user.logout);
 
 app.post('/update', user.update);
-app.post('/logout', user.logout);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -3,15 +3,6 @@ var Homepg = require('../models/fb_model.js');
 /*
  * GET all the facebook things
  */
-exports.list = function(req, res){
-	var homelist = Homepg.find({}).sort('fb_id').exec(function (err, docs) {
-		if (err)
-			return console.log("Error in User list");
-		
-		res.render('list', {title: 'Home IDs', idlist: homelist});
-	});
-};
-
 exports.myhome = function(req, res){
 	var user = req.session.user;
 	if (user == null){
@@ -60,14 +51,13 @@ exports.update = function(req, res){
 	});
 };
 
+exports.login = function(req, res){
+	res.redirect('/');
+};
+
 exports.logout = function(req, res){
-	if (req.session.user == null){
-		res.redirect('/');
-	}
-	else{
-		//FB.logout(function(response) {
-		req.session.user = null;
-		res.redirect('/');
-		//};
-	};
+	console.log("Logging out");
+	req.user = null;
+	req.session.destroy();
+	res.redirect('/login');
 };

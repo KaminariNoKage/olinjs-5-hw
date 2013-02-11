@@ -42,7 +42,7 @@ $(document).ready(function(){
 	});
 
 	$("#logout").click(function(){
-		$.post("/logout");
+		window.location = "/logout";
 	});
 
 });
