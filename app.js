@@ -26,7 +26,7 @@ app.configure(function(){
   app.use(Facebook.middleware({ appId: '552316371453189', secret: 'b97c4a9c6423bc770f2a59d2af9a4273' }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
-  mongoose.connect('localhost');
+  mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/myfacebook');
 });
 
 app.configure('development', function(){
