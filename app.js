@@ -46,10 +46,6 @@ function facebookGetUser() {
   }
 }
 
-app.get('/test', facebookGetUser(), function(req, res){
-    res.send("hello there", req.user);
-});
-
 app.get('/', facebookGetUser(), routes.index);
 app.get('/myhome', facebookGetUser(), user.myhome);
 app.get('/login', Facebook.loginRequired(), user.login);
